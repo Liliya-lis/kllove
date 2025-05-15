@@ -1,5 +1,6 @@
 #include <filesystem.h>
 #include <stdio.h>
+#include <string.h>
 
 int main() {
     // Создаем новый файл
@@ -23,5 +24,46 @@ int main() {
     printf("Файлы в текущей директории:\n");
     list_files();
 
+    return 0;
+}
+
+#define MAX_INPUT 256
+
+void process_command(char* command, char* arg1) {
+    if (strcmp(command, "создать") == 0) {
+        create_file(arg1);
+        printf("Файл %s создан\n", arg1);
+    } else if (strcmp(command, "удалить") == 0) {
+        delete_file(arg1);
+        printf("Файл %s удален\n", arg1);
+    } else if (strcmp(command, "изменить") == 0) {
+        printf("Введите новое содержимое: ");
+        char content[MAX_INPUT];
+        fgets(content, MAX_INPUT, stdin);
+        write_file(arg1, content);
+    } else if (strcmp(command, "просмотреть") == 0) {
+        char* content = read_file(arg1);
+        printf("Содержимое:\n%s\n", content);
+        free(content);
+    }
+}
+
+int main() {
+    char input[MAX_INPUT];
+    
+    while(1) {
+        printf("> ");
+        fgets(input, MAX_INPUT, stdin);
+        
+        char* cmd = strtok(input, " \n");
+        char* arg1 = strtok(NULL, " \n");
+        
+        if (!cmd || !arg1) {
+            printf("Ошибка формата команды!\n");
+            continue;
+        }
+        
+        process_command(cmd, arg1);
+    }
     return 0;
 }
