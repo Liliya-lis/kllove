@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <filesystem.h>
 // Функция для открытия (или создания и открытия) файла файловой системы
 FILE* open_or_create_filesystem(const char* filename) {
     FILE* fs = fopen(filename, "a+"); // Открываем для чтения и записи (создаём если не существует)
